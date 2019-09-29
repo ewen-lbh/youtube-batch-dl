@@ -17,5 +17,8 @@ module YoutubeBatchDL
       puts "v#{YoutubeBatchDL::VERSION}"
     end
     map %w(--version -v) => :version
+
+    require_relative 'commands/config'
+    register YoutubeBatchDL::Commands::Config, 'config', 'config [SUBCOMMAND]', 'Set SETTING to VALUE'
   end
 end

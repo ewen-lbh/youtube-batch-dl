@@ -1,0 +1,81 @@
+= youtube-batch-dl
+
+Search & download youtube videos from a list of search terms, with an edge for music downloading.
+
+== Installation
+
+Install the gem by typing:
+
+    $ gem install youtube_batch_dl
+
+== Usage
+
+`youtube-batch-dl` is made up of different _subcommands_ that you can use to achieve different tasks.
+
+=== The `config` command
+This command provides a simple way to read & write to a config file saved to `~/.config/youtube-batch-dl/config.yaml`. 
+
+The command is used as follows:
+
+[horizontal]
+`config get SETTING [SETTING \...]`:: Displays `SETTING` 's value(s). If `SETTING` is `all`, display every possible setting with its value (in *red* when the setting isn't set to its default value)
+`config set SETTING VALUE`:: Sets `SETTING` to `VALUE`
+`config reset SETTING`:: Resets `SETTING` to its default value. If `SETTING` is `all`, ask for confirmation and reset every setting
+`config open`:: Opens `~/.config/youtube-batch-dl/config.yaml` with `$EDITOR` (falls back to `nano`). Use `--with`/`-w` to explicitly specify which command should receive the path.
+
+
+=== The `from FILE` command
+The main command. Starts up the downloading/metadata tagging process, using tracks specified in `FILE`.
+
+==== Flags
+[horizontal]
+`-v/--video-mode`:: Shortcut for `--video` and `--no-metadata`
+`--video`:: Downloads as a `.mp4`.
+`--no-metadata`:: Does not try to apply metadata.
+`-f/--format` or `--as`:: Specify the format used to download the file. Supported formats are `.mp3`, `.mp4`, `.m4a`, `.wav`, `.flac` and `.ogg`.
+
+=== The `add TRACKNAME [FILE]` command
+Appends `TRACKNAME` to `FILE` (uses the `in_file` setting as a default)
+
+
+=== The `deactivate TRACKNAME [FILE]`
+Comments out *all occurences* of `TRACKNAME` in `FILE` (uses the `in_file` setting as a default).
+
+==== Flags
+[horizontal]
+`-c/--because REASON`:: Specify _why_ you disabled that track.
+`-f [NUM]/--first [NUM]`:: Only deletes the first `NUM` occurence(s) of `TRACKNAME`. `NUM`  defaults to 1.
+
+=== The `remove TRACKNAME [FILE]` command
+Same as `deactivate`, but *deletes* entries. The `--because` flag is not available. Note that this action *cannot* be undone.
+
+=== The `start` command
+Shortcut for executing `from FILE`, with `FILE` being the `in_file` setting
+
+=== The `addstart TRACKNAME` command
+Shorcut for executing `add TRACKNAME` and `start`
+
+=== The `oneshot TERM [TERM ...]` command
+Instead of the standard procedure, downloads in the current directory and do not check if the track has already been downloaded. `TERM` can be one of:
+
+- YouTube URL
+- YouTube video ID
+- Track name, in the same format as the one used by the `from FILE` command.
+
+== Development
+
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to https://rubygems.org[rubygems.org].
+
+== Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/ewen-lbh/youtube_batch_dl. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the http://contributor-covenant.org[Contributor Covenant] code of conduct.
+
+== Code of Conduct
+
+Everyone interacting in the youtube-batch-dl project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the https://github.com/ewen-lbh/youtube_batch_dl/blob/master/CODE_OF_CONDUCT.md[code of conduct].
+
+== Copyright
+
+Copyright (c) 2019 ewen-lbh. See https://github.com/ewen-lbh/youtube_batch_dl/blob/master/LICENSE.txt[MIT License] for further details.

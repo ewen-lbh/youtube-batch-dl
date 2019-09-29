@@ -1,6 +1,6 @@
-RSpec.describe YoutubeBatchDl do
+RSpec.describe YoutubeBatchDL do
   it "has a version number" do
-    expect(YoutubeBatchDl::VERSION).not_to be nil
+    expect(YoutubeBatchDL::VERSION).not_to be nil
   end
 
   it "does something useful" do

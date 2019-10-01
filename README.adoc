@@ -24,8 +24,8 @@ The command is used as follows:
 `config open`:: Opens `~/.config/youtube-batch-dl/config.yaml` with `$EDITOR` (falls back to `nano`). Use `--with`/`-w` to explicitly specify which command should receive the path.
 
 
-=== The `from FILE` command
-The main command. Starts up the downloading/metadata tagging process, using tracks specified in `FILE`.
+=== The `start [FILES...]` command
+The main command. Starts up the downloading/metadata tagging process, using tracks specified in `FILES...`. `FILES...` defaults to the `in_file` config setting.
 
 ==== Flags
 [horizontal]
@@ -48,9 +48,6 @@ Comments out *all occurences* of `TRACKNAME` in `FILE` (uses the `in_file` setti
 
 === The `remove TRACKNAME [FILE]` command
 Same as `deactivate`, but *deletes* entries. The `--because` flag is not available. Note that this action *cannot* be undone.
-
-=== The `start` command
-Shortcut for executing `from FILE`, with `FILE` being the `in_file` setting
 
 === The `addstart TRACKNAME` command
 Shorcut for executing `add TRACKNAME` and `start`

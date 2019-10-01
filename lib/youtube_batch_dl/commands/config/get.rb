@@ -6,14 +6,18 @@ module YoutubeBatchDL
   module Commands
     class Config
       class Get < YoutubeBatchDL::Command
-        def initialize(settings, options)
+        def initialize(settings, options, config_obj)
           @settings = settings
           @options = options
+          @config = config_obj
         end
 
         def execute(input: $stdin, output: $stdout)
           # Command logic goes here ...
-          output.puts "OK"
+          @settings.each do |setting|
+            value = @config.fetch setting
+            output.puts "#{setting}: #{value}"
+          end
         end
       end
     end

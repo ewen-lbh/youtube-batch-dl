@@ -6,27 +6,26 @@ require 'thor'
 module YoutubeBatchDL
   module Commands
     class Config < Thor
-
       namespace :config
 
       def initialize(*)
         super
-        config_dir   = '~/.config/youtube-batch-dl'
+        config_dir   = '/home/ewen/.config/youtube-batch-dl'
         config_name  = 'config'
         config_ext   = '.yaml'
         @config_path = config_dir + '/' + config_name + config_ext
-
-        # Create directory if it does not exist
-        FileUtils.mkdir_p config_dir
-
+  
         # Init config
         @config = TTY::Config.new
         @config.filename = config_name
         @config.extname  = config_ext
-        @config.append_path = config_dir
-
+        @config.append_path config_dir
+  
         # Default values
-        @config.set(:out_dir, value: '~')
+        @config.set :out_dir, value: "/home/#{ENV['USER']}"
+  
+        # Read the config
+        @config.read
       end
 
       desc 'open', 'Opens ~/.config/youtube-batch-dl/config.yaml'
@@ -51,7 +50,7 @@ module YoutubeBatchDL
           invoke :help, ['reset']
         else
           require_relative 'config/reset'
-          YoutubeBatchDL::Commands::Config::Reset.new(settings, options).execute
+          YoutubeBatchDL::Commands::Config::Reset.new(settings, options, @config).execute
         end
       end
 
@@ -63,7 +62,7 @@ module YoutubeBatchDL
           invoke :help, ['get']
         else
           require_relative 'config/get'
-          YoutubeBatchDL::Commands::Config::Get.new(settings, options).execute
+          YoutubeBatchDL::Commands::Config::Get.new(settings, options, @config).execute
         end
       end
 
@@ -75,7 +74,7 @@ module YoutubeBatchDL
           invoke :help, ['set']
         else
           require_relative 'config/set'
-          YoutubeBatchDL::Commands::Config::Set.new(setting, value, options).execute
+          YoutubeBatchDL::Commands::Config::Set.new(setting, value, options, @config).execute
         end
       end
     end

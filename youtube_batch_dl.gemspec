@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.name          = "youtube_batch_dl"
   spec.license       = "MIT"
   spec.version       = YoutubeBatchDL::VERSION
-  spec.authors       = ["TODO: Write your name"]
-  spec.email         = ["TODO: Write your email address"]
+  spec.authors       = ["Ewen Le Bihan"]
+  spec.email         = ["ewen.lebihan7@gmail.com"]
 
   spec.summary       = "Search & download youtube videos from a list of search terms, with an edge for music downloading."
   #TODO: write a better description (too close to the summary)
@@ -59,8 +59,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-which", "~> 0.4"
   spec.add_dependency "pastel", "~> 0.7.2"
   spec.add_dependency "thor", "~> 0.20.0"
+  #----------------------------------------------
+  spec.add_dependency "rspotify"
+  spec.add_dependency "taglib"
 
-  spec.add_development_dependency "bundler", "~> 1.17"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rake-compiler"
   spec.add_development_dependency "rspec", "~> 3.0"

@@ -61,7 +61,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thor", "~> 0.20.0"
   #----------------------------------------------
   spec.add_dependency "rspotify"
-  spec.add_dependency "taglib"
+  spec.add_dependency "taglib-ruby"
+  spec.add_dependency "dotenv"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"

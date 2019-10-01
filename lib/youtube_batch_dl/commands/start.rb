@@ -2,7 +2,10 @@
 require 'open-uri'
 require 'json'
 require 'rspotify'
+require 'dotenv'
 require_relative '../command'
+
+class FileNotFound < StandardError; end
 
 module YoutubeBatchDL
   module Commands
@@ -11,21 +14,28 @@ module YoutubeBatchDL
         @files = files
         @options = options
         @config = config
-
+        if files.length < 1
+          default = @config.fetch(:in_file)
+          if !default
+            raise FileNotFound, "Please specify a file in the command or add a default `in_file` setting in the config"
+          else
+            @files = [ default ]
+          end
+        end
+        #TODO: remove duplicates with same artist & title from spotify metadata? (+ this)
         @files.uniq!
       end
 
       class APISearch
         def initialize()
+          Dotenv.load "#{File.dirname __FILE__}/../../../.env"
           @api_keys = {
-            youtube: "AIzaSyAmyNyydF4rmCTJj3ccMz7boV80fjFmwN4",
-            spotify: {
-              id:     "b6ba0ee2cd66405a8adbb3069b5f2e76", 
-              secret: "181dc2e5565a4b6e9d5747a608e57a4a",
-            }
+            youtube: ENV['YOUTUBE_DATA_API_KEY'],
+            spotify_id: ENV['SPOTIFY_API_ID'], 
+            spotify_secret: ENV['SPOTIFY_API_SECRET'],
           }
           
-          RSpotify.authenticate @api_keys[:spotify][:id], @api_keys[:spotify][:secret]
+          RSpotify.authenticate @api_keys[:spotify_id], @api_keys[:spotify_secret]
 
           @endpoints = {
             youtube: "https://www.googleapis.com/youtube/v3/search?part=snippet&key=#{@api_keys[:youtube]}&q=%s"
@@ -40,16 +50,13 @@ module YoutubeBatchDL
 
         def spotify query
           tracks = RSpotify::Track.search(query)
-          selected = tracks.select {|track|
-            return track unless track.album.album_type == 'compilation'
-          }
-          selected = selected.length ?: tracks
-          tracks.sort! {|a,b| 
-            return a.album.tracks_count <=> b.album.tracks_count
-          }
+          selected = tracks.keep_if {|t| t.album.album_type != 'compilation' && t.album.total_tracks <= 15} #TODO: add artist name check & album artist check (artists.contains for both)
+          
+          selected.length > 0 || selected = tracks
 
-          track = tracks.length ? 
-          return track
+          selected.sort! {|a,b| b.album.total_tracks <=> a.album.total_tracks }
+          
+          return selected.length ? selected.first : nil
         end
       end
 
@@ -58,8 +65,7 @@ module YoutubeBatchDL
         searcher = APISearch.new
         queries.each do |query| 
           track = searcher.spotify query
-          p track.inspect
-          output.puts "#{query} [#{track.album.name}] {#{track.album.release_date}}"
+          output.puts "#{query} [#{track.album.album_type}||#{track.album.name}] {#{track.album.release_date}}" if track
         end
       end
 
@@ -68,13 +74,14 @@ module YoutubeBatchDL
         @files.each do |file|
           queries << file_searches(file)
         end
-        queries.flatten!.uniq!
+        queries.flatten!
+        queries.uniq!
         return queries
       end
 
-      def file_searches filepath=nil
-        filepath ||= @config.fetch :in_file
-        filepath = Dir.pwd + '/' + filepath
+      def file_searches filepath
+        p filepath
+        filepath =~ /^\// || filepath = Dir.pwd + '/' + filepath
         lines = []
         File.open filepath, 'r' do |file|
           lines << file.readlines.map(&:chomp)

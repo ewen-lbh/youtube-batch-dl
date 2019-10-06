@@ -24,8 +24,13 @@ The command is used as follows:
 `config open`:: Opens `~/.config/youtube-batch-dl/config.yaml` with `$EDITOR` (falls back to `nano`). Use `--with`/`-w` to explicitly specify which command should receive the path.
 
 
-=== The `start [FILES...]` command
-The main command. Starts up the downloading/metadata tagging process, using tracks specified in `FILES...`. `FILES...` defaults to the `in_file` config setting.
+=== The `start [RESOURCES...]` command
+The main command. Starts up the downloading/metadata tagging process, using tracks specified within `RESOURCES...`. `RESOURCES...` defaults to the `in_file` config setting.
+
+Within can be one of...
+- spotify playlist URL
+- spotify album URL
+- 
 
 ==== Flags
 [horizontal]

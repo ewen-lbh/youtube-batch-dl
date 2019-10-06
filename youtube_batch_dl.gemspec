@@ -63,6 +63,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rspotify"
   spec.add_dependency "taglib-ruby"
   spec.add_dependency "dotenv"
+  spec.add_dependency "fuzzy_match"
+  spec.add_dependency "amatch"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"

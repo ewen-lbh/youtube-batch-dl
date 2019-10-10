@@ -23,6 +23,13 @@ The command is used as follows:
 `config reset SETTING`:: Resets `SETTING` to its default value. If `SETTING` is `all`, ask for confirmation and reset every setting
 `config open`:: Opens `~/.config/youtube-batch-dl/config.yaml` with `$EDITOR` (falls back to `nano`). Use `--with`/`-w` to explicitly specify which command should receive the path.
 
+=== The `list [FILES...]` command
+Lists all tracks in `FILES...` (use `in_file` as a default), and for each one, shows whether it has been downloaded, is disabled or is to be downloaded
+==== Options
+[horizontal]
+`-m/--fetch-metadata`:: Fetches metadata from spotify (such as album name) to display it along the track's name & artist
+`-D/--exclude-disabled`:: Don't show disabled tracks (commented-out)
+`-L/--exclude-downloaded`:: Don't show already-downloaded tracks
 
 === The `start [RESOURCES...]` command
 The main command. Starts up the downloading/metadata tagging process, using tracks specified within `RESOURCES...`. `RESOURCES...` defaults to the `in_file` config setting.

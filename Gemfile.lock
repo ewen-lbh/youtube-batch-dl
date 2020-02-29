@@ -79,7 +79,7 @@ GEM
       ruby_parser (~> 3.0)
     public_suffix (3.1.1)
     rack (2.0.7)
-    rake (10.5.0)
+    rake (13.0.1)
     rake-compiler (1.0.8)
       rake
     rest-client (2.0.2)
@@ -186,7 +186,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
-  rake (~> 10.0)
+  rake (~> 13.0)
   rake-compiler
   rspec (~> 3.0)
   youtube_batch_dl!
